@@ -91,3 +91,11 @@ async def progress(request: Request, background_tasks: BackgroundTasks):
                 status_code=400, detail='URL, overlay, and/or title value missing')
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+if __name__ == "__main__":
+    import uvicorn
+    from os import getenv
+
+    port = int(getenv("PORT", 8000))
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=True)
