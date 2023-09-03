@@ -6,3 +6,14 @@ Content-Type: application/json
     "title" : "title",
     "overlay" : "dinvite.png"
 }
+
+###
+GET https://moviepy-1-a7680367.deta.app/
+server{
+    listen 80;
+    server_name http://143.42.69.43 example.com;
+
+    location / {
+        proxy_pass http://localhost:8000;
+    }
+}
