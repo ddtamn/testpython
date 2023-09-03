@@ -35,55 +35,58 @@ async def progress(request: Request, background_tasks: BackgroundTasks):
 
         if URL is not None and overlay is not None and title is not None:
             clip = VideoFileClip(URL)
+
+            # return {"Data": clip}
+
             total_frames = int(clip.fps * clip.duration)
 
-            # # Add your video processing code here
-            # print('Adding overlay image')
-            # # Load the overlay image
-            # overlay_image = ImageClip(overlay)
+            # Add your video processing code here
+            print('Adding overlay image')
+            # Load the overlay image
+            overlay_image = ImageClip(overlay)
 
-            # # Create overlay with the same duration as the clip
-            # overlay_clip = overlay_image.set_duration(clip.duration)
+            # Create overlay with the same duration as the clip
+            overlay_clip = overlay_image.set_duration(clip.duration)
 
-            # # Resize and position the overlay
-            # overlay_clip = overlay_clip.resize(
-            #     width=clip.w // 2).set_pos(("center", "center"))
+            # Resize and position the overlay
+            overlay_clip = overlay_clip.resize(
+                width=clip.w // 2).set_pos(("center", "center"))
 
-            # print('Composite the video and overlay')
-            # # Composite the video and overlay
-            # composite_clip = CompositeVideoClip([clip, overlay_clip])
+            print('Composite the video and overlay')
+            # Composite the video and overlay
+            composite_clip = CompositeVideoClip([clip, overlay_clip])
 
-            # print('Apply video processing effect')
-            # # Apply video processing
-            # clip1 = composite_clip.subclip(0, 2).fx(vfx.speedx, 0.5)
-            # clip2 = composite_clip.subclip(2, 5)
-            # clip3 = composite_clip.subclip(5, 8).fx(vfx.speedx, 0.5)
+            print('Apply video processing effect')
+            # Apply video processing
+            clip1 = composite_clip.subclip(0, 2).fx(vfx.speedx, 0.5)
+            clip2 = composite_clip.subclip(2, 5)
+            clip3 = composite_clip.subclip(5, 8).fx(vfx.speedx, 0.5)
 
-            # # Concatenate clips
-            # concate = concatenate_videoclips([clip1, clip2, clip3])
+            # Concatenate clips
+            concate = concatenate_videoclips([clip1, clip2, clip3])
 
-            # # Save concatenated clip
-            # # Use title for file name
-            # concate_output_path = f"{title}_concate_video.mp4"
-            # concate.write_videofile(concate_output_path, codec="libx264")
+            # Save concatenated clip
+            # Use title for file name
+            concate_output_path = f"{title}_concate_video.mp4"
+            concate.write_videofile(concate_output_path, codec="libx264")
 
-            # # Load concatenated clip
-            # concate_clip = VideoFileClip(concate_output_path)
+            # Load concatenated clip
+            concate_clip = VideoFileClip(concate_output_path)
 
-            # # Apply time mirror effect
-            # reverse_clip = concate_clip.fx(vfx.time_mirror)
+            # Apply time mirror effect
+            reverse_clip = concate_clip.fx(vfx.time_mirror)
 
-            # # Concatenate original and reversed clips
-            # result_clip = concatenate_videoclips([concate_clip, reverse_clip])
+            # Concatenate original and reversed clips
+            result_clip = concatenate_videoclips([concate_clip, reverse_clip])
 
-            # # Generate a random integer based on the current time
-            # random_integer = int(time.time()) + random.randint(1, 1000)
+            # Generate a random integer based on the current time
+            random_integer = int(time.time()) + random.randint(1, 1000)
 
-            # # Save final result with a random integer in the filename
-            # result_clip_output_path = f"{title}_result_{random_integer}.mp4"
-            # result_clip.write_videofile(
-            #     result_clip_output_path, codec="libx264", logger="none")
-            # # End of video processing code
+            # Save final result with a random integer in the filename
+            result_clip_output_path = f"{title}_result_{random_integer}.mp4"
+            result_clip.write_videofile(
+                result_clip_output_path, codec="libx264", logger="none")
+            # End of video processing code
 
             return StreamingResponse(generate_progress_updates(total_frames), media_type='text/event-stream')
         else:
