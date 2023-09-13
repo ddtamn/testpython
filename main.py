@@ -102,9 +102,9 @@ async def progress(request: Request, background_tasks: BackgroundTasks):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-if __name__ == "__main__":
-    import uvicorn
-    from os import getenv
+# if __name__ == "__main__":
+#     import uvicorn
+#     from os import getenv
 
-    port = int(getenv("PORT", 8000))
-    uvicorn.run("main:app", host="127.0.0.1", port=port, reload=True)
+#     port = int(getenv("PORT", 8000))
+#     uvicorn.run("main:app", host="127.0.0.1", port=port, reload=True)
