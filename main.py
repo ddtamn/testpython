@@ -62,33 +62,39 @@ async def progress(request: Request, background_tasks: BackgroundTasks):
             clip2 = composite_clip.subclip(2, 5)
             clip3 = composite_clip.subclip(5, 8).fx(vfx.speedx, 0.5)
 
+            print('Concatenate clips')
             # Concatenate clips
             concate = concatenate_videoclips([clip1, clip2, clip3])
 
             # Save concatenated clip
+            print('Use title for file name')
             # Use title for file name
             concate_output_path = f"{title}_concate_video.mp4"
             concate.write_videofile(concate_output_path, codec="libx264")
 
             # Load concatenated clip
+            print('Load concatenated clip')
             concate_clip = VideoFileClip(concate_output_path)
 
             # Apply time mirror effect
+            print('Apply time mirror effect')
             reverse_clip = concate_clip.fx(vfx.time_mirror)
 
             # Concatenate original and reversed clips
+            print('Concatenate original and reversed clips')
             result_clip = concatenate_videoclips([concate_clip, reverse_clip])
 
             # Generate a random integer based on the current time
             random_integer = int(time.time()) + random.randint(1, 1000)
 
             # Save final result with a random integer in the filename
+            print('Save final result with a random integer in the filename')
             result_clip_output_path = f"{title}_result_{random_integer}.mp4"
             result_clip.write_videofile(
-                result_clip_output_path, codec="libx264", logger="none")
+                result_clip_output_path, codec="libx264")
             # End of video processing code
-
-            return StreamingResponse(generate_progress_updates(total_frames), media_type='text/event-stream')
+            print('End of video processing code')
+            return {"Success": "true"}
         else:
             raise HTTPException(
                 status_code=400, detail='URL, overlay, and/or title value missing')
